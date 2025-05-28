@@ -1,22 +1,12 @@
 import { Router } from "express";
-import prisma from "../prisma/client";
+import playerController from "../controllers/player";
 
 const router = Router();
 
-router.post("/", async (req, res) => {
-    const { name } = req.body;
-
-    const player = await prisma.player.create({
-        data: {
-            name
-        },
-    });
-    res.status(201).json(player);
-});
-
-router.get("/", async (req, res) => {
-    const players = await prisma.player.findMany();
-    res.status(200).json(players);
-});
+router.post("/", playerController.createPlayer);
+router.get("/", playerController.getAllPlayers);
+router.get("/:id", playerController.getPlayerById);
+router.put("/:id", playerController.updatePlayer);
+router.delete("/:id", playerController.deletePlayer);
 
 export default router;

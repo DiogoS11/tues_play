@@ -18,5 +18,45 @@ model Player {
   id        String   @id @default(uuid())
   name      String
   nickname  String?
+  age Int ?
+  heightCm Int?
+  preferredFoot PreferredFoot?
+  position Position?
+  avatarUrl String?
+  joinedAt DateTime @default(now())
   createdAt DateTime @default(now())
+  matches PlayerInmatch[]
+}
+
+model Match {
+  id String @id @default(uuid())
+  date DateTime @default(now())
+  scoreA Int?
+  scoreB Int?
+  players PlayerInmatch[]
+}
+
+model PlayerInmatch {
+  id String @id @default(uuid())
+  player Player @relation(fields: [playerId], references: [id])
+  playerId String
+  match Match @relation(fields: [matchId], references: [id])
+  matchId String
+  goals Int @default(0)
+  assists Int @default(0)
+  isCaptain Boolean @default(false)
+  createdAt DateTime @default(now())
+}
+
+enum PreferredFoot {
+  LEFT
+  RIGHT
+  BOTH
+}
+
+enum Position {
+  GOALKEEPER
+  DEFENDER
+  MIDFIELDER
+  FORWARD
 }
